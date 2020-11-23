@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  sample:
+    container_name: sample
+    build:
+      context: ./front/sample
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - '.:/front/sample/app'
+      - '.:/front/sample/app/node_modules'
+    ports:
+      - 3001:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+   
+  api:
+    container_name: api
+    restart: always
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    links:
+      - mongo
+    
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
