@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import {HashRouter as Router,Switch,Route,Link,useLocation,useHistory} from "react-router-dom"
+import {Login} from './Login'
+import {getCookie} from './util'
 
 function App() {
+  const[connected, setConnected] = useState(null)
+
+  useEffect(() => {
+    document.title = "Projet Microservices"
+ }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router basename={'/'}>
+      <Route render={({ location, history }) => (
+            <React.Fragment>
+              {!getCookie("id") && <Route path="/" exact component={props => <Login data={{location, history, setConnected}}/>} />}
+            </React.Fragment>
+        )}
+        />
+      </Router>
     </div>
   );
 }

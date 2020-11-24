@@ -20,24 +20,48 @@ mongoose.connect(config.DB, function (err) {
  
 });
 
-const PersonModel = mongoose.model("person", {
-    firstname: String,
-    lastname: String
+const UserModel = mongoose.model("user", {
+    mail: String,
+    pwd: String
 });
 
-app.get("/people", async (request, response) => {
+var admin = new UserModel({
+	mail: 'admin@admin.com',
+	pwd: 'admin'
+});
+
+admin.save(function(err) {
+    if (err) throw err;
+     
+    console.log('User successfully saved.');
+	}
+);
+
+app.get("/users", async (request, response) => {
+	response.header("Access-Control-Allow-Origin", "*");
     try {
-        var result = await PersonModel.find().exec();
+        var result = await UserModel.find().exec();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
 });
 
-app.post("/person", async (request, response) => {
+app.get("/user/:mail", async (request, response) => {
+	response.header("Access-Control-Allow-Origin", "*");
     try {
-        var person = new PersonModel(request.body);
-        var result = await person.save();
+        var user = await UserModel.find({mail: request.params.mail}).exec();
+        response.send(user);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.post("/user", async (request, response) => {
+	response.header("Access-Control-Allow-Origin", "*");
+    try {
+        var user = new UserModel(request.body);
+        var result = await user.save();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
