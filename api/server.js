@@ -1,22 +1,47 @@
 const express = require('express');
-const app = express();
 const mongodb = require('mongodb');
+
+var mongoose = require('mongoose');
+const BodyParser = require("body-parser");
+
+const app = express();
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: true }));
+
 
 const config = require('./db');
 const PORT = 4000;
-const client = mongodb.MongoClient;
 
-client.connect(config.DB, function(err, db) {
-    if(err) {
-        console.log('database is not connected')
-    }
-    else {
-        console.log('connected!!')
+mongoose.connect(config.DB, function (err) {
+ 
+   if (err) throw err;
+ 
+   console.log('Successfully connected');
+ 
+});
+
+const PersonModel = mongoose.model("person", {
+    firstname: String,
+    lastname: String
+});
+
+app.get("/people", async (request, response) => {
+    try {
+        var result = await PersonModel.find().exec();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
     }
 });
 
-app.get('/', function(req, res) {
-    res.json({"hello": "world"});
+app.post("/person", async (request, response) => {
+    try {
+        var person = new PersonModel(request.body);
+        var result = await person.save();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
 });
 
 app.listen(PORT, function(){
