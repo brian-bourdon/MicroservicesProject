@@ -22,7 +22,7 @@ export const Home = (props) => {
     return (
         <Container style={{marginTop: "3%"}}>
             {isLoading && <div className="text-center"><Spinner as="span" animation="border" size="sm" variant="primary" role="status" aria-hidden="true" style={{width: "5em", height: "5em"}} /></div>}
-            <CardDeck>
+            <CardDeck >
                 {!isLoading && catalogue.map(c => <Card>
                 <Card.Img variant="top" src="holder.js/100px160" />
                 <Card.Body>
@@ -32,7 +32,9 @@ export const Home = (props) => {
                 </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
+                    <div className="text-center">
+                        <Button>Ajouter au panier</Button>
+                    </div>
                 </Card.Footer>
             </Card>)}
             </CardDeck>

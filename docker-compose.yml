@@ -38,9 +38,23 @@ services:
       - 4001:4001
     links:
       - mongo_catalogue
+
+  api_panier:
+    container_name: api_panier
+    restart: always
+    build:
+      context: ./api_panier
+      dockerfile: Dockerfile
+    ports:
+      - 4002:4002
+    links:
+      - mongo_panier
     
   mongo_login:
     container_name: mongo_login
+    volumes:
+      - mongo_login:/data/db
+      - mongo_login_config:/data/configdb
     image: mongo
     restart: always
     ports:
@@ -48,7 +62,28 @@ services:
       
   mongo_catalogue:
     container_name: mongo_catalogue
+    volumes:
+      - mongo_catalogue:/data/db
+      - mongo_catalogue_config:/data/configdb
     image: mongo
     restart: always
     ports:
       - 27018:27017
+
+  mongo_panier:
+    container_name: mongo_panier
+    volumes:
+      - mongo_panier:/data/db
+      - mongo_panier_config:/data/configdb
+    image: mongo
+    restart: always
+    ports:
+      - 27019:27017
+      
+volumes:
+  mongo_login:
+  mongo_login_config:
+  mongo_catalogue:
+  mongo_catalogue_config:
+  mongo_panier:
+  mongo_panier_config:

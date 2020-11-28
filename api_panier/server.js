@@ -10,7 +10,7 @@ app.use(BodyParser.urlencoded({ extended: true }));
 
 
 const config = require('./db');
-const PORT = 4000;
+const PORT = 4002;
 
 mongoose.connect(config.DB, function (err) {
  
@@ -20,48 +20,26 @@ mongoose.connect(config.DB, function (err) {
  
 });
 
-const UserModel = mongoose.model("user", {
-    mail: String,
-    pwd: String
+const PanierModel = mongoose.model("panier", {
+    idUser: String,
+    idDisk: String
 });
 
-/*var admin = new UserModel({
-	mail: 'admin@admin.com',
-	pwd: 'admin'
-});
-
-admin.save(function(err) {
-    if (err) throw err;
-     
-    console.log('User successfully saved.');
-	}
-);*/
-
-app.get("/users", async (request, response) => {
+app.get("/panier/:idUser", async (request, response) => {
 	response.header("Access-Control-Allow-Origin", "*");
     try {
-        var result = await UserModel.find().exec();
+        var result = await PanierModel.find({idUser: request.params.idUser}).exec();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
     }
 });
 
-app.get("/user/:mail", async (request, response) => {
+app.post("/panier", async (request, response) => {
 	response.header("Access-Control-Allow-Origin", "*");
     try {
-        var user = await UserModel.find({mail: request.params.mail}).exec();
-        response.send(user);
-    } catch (error) {
-        response.status(500).send(error);
-    }
-});
-
-app.post("/user", async (request, response) => {
-	response.header("Access-Control-Allow-Origin", "*");
-    try {
-        var user = new UserModel(request.body);
-        var result = await user.save();
+        var panier = new PanierModel(request.body);
+        var result = await panier.save();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
