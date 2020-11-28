@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {HashRouter as Router,Switch,Route,Link,useLocation,useHistory} from "react-router-dom"
+import {Container} from 'react-bootstrap'
 import {Login} from './Login'
 import {Home} from './Home'
 import {getCookie} from './util'

@@ -26,15 +26,15 @@ const CatalogueModel = mongoose.model("catalogue", {
 	prix: Number
 });
 
-CatalogueModel.insertMany([ 
+CatalogueModel.insertMany([
     { nom: 'Disque 1', description: "techno", prix: 20}, 
     { nom: 'Disque 2', description: "rock", prix: 15}, 
     { nom: 'Disque 3', description: "electro", prix: 10},
 	{ nom: 'Disque 4', description: "rap", prix: 15}
 ]).then(function(){ 
-    console.log("Data inserted")  // Success 
+    console.log("Data inserted")  // Success
 }).catch(function(error){ 
-    console.log(error)      // Failure 
+    console.log(error)      // Failure
 }); 
 
 app.get("/catalogue", async (request, response) => {
