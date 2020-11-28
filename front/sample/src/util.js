@@ -15,3 +15,11 @@ export const getCookie = (name) => {
     })
     return cookie[name];
   }
+
+export const deleteCookie = ( name, path ) => {
+    if( getCookie( name ) ) {
+      document.cookie = name + "=" +
+        ((path) ? ";path="+path:"")+
+        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+  }

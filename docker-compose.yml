@@ -17,11 +17,11 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
    
-  api:
-    container_name: api
+  api_login:
+    container_name: api_login
     restart: always
     build:
-      context: ./api
+      context: ./api_login
       dockerfile: Dockerfile
     ports:
       - 4000:4000
