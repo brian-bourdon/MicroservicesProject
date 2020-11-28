@@ -1,3 +1,3 @@
 module.exports = {
-    DB: 'mongodb://mongo:27017/newdock'
+    DB: 'mongodb://mongo_login:27017/newdock'
 }

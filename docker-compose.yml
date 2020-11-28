@@ -26,11 +26,29 @@ services:
     ports:
       - 4000:4000
     links:
-      - mongo
+      - mongo_login
+
+  api_catalogue:
+    container_name: api_catalogue
+    restart: always
+    build:
+      context: ./api_catalogue
+      dockerfile: Dockerfile
+    ports:
+      - 4001:4001
+    links:
+      - mongo_catalogue
     
-  mongo:
-    container_name: mongo
+  mongo_login:
+    container_name: mongo_login
     image: mongo
     restart: always
     ports:
       - 27017:27017
+      
+  mongo_catalogue:
+    container_name: mongo_catalogue
+    image: mongo
+    restart: always
+    ports:
+      - 27018:27017
