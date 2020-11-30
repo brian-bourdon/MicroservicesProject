@@ -25,17 +25,29 @@ const UserModel = mongoose.model("user", {
     pwd: String
 });
 
-/*var admin = new UserModel({
-	mail: 'admin@admin.com',
-	pwd: 'admin'
+UserModel.deleteMany({}, function (err) {
+  if (err) return handleError(err);
+  // deleted at most one tank document
 });
 
-admin.save(function(err) {
-    if (err) throw err;
-     
-    console.log('User successfully saved.');
-	}
-);*/
+UserModel.find({ mail: "admin@admin.com" }, function (err, res) {
+  if (!res.length) {
+	  var admin = new UserModel({
+		mail: 'admin@admin.com',
+		pwd: 'admin'
+	});
+
+	admin.save(function(err) {
+		if (err) throw err;
+		 
+		console.log('User successfully saved.');
+		}
+	);
+  }
+
+});
+
+
 
 app.get("/users", async (request, response) => {
 	response.header("Access-Control-Allow-Origin", "*");

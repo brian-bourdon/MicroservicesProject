@@ -1,43 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import {HashRouter as Router,Switch,Route,Link,useLocation,useHistory} from "react-router-dom"
-import {Container, DropdownButton, Card, Spinner, CardDeck, Alert, Navbar, Form, FormControl, Button, Nav} from 'react-bootstrap'
+import {Container, DropdownButton, Card, Spinner, CardDeck, Alert, Navbar, Form, FormControl, Button, Nav, Row, Col} from 'react-bootstrap'
+import {getCookie} from './util';
 import axios from 'axios'
 
 export const Home = (props) => {
     const [catalogue, setCatalogue] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoadingCatalogue, setIsLoadingCatalogue] = useState(true)
 
     useEffect(() => {
         axios.get("http://localhost:4001/catalogue").then(res => {
             setCatalogue(res.data)
-            setIsLoading(false)
+            setIsLoadingCatalogue(false)
             console.log(res.data)
         }).catch(err => {
             console.log(err)
-            setIsLoading(false)
+            setIsLoadingCatalogue(false)
         })
 
      }, []);
 
     return (
         <Container style={{marginTop: "3%"}}>
-            {isLoading && <div className="text-center"><Spinner as="span" animation="border" size="sm" variant="primary" role="status" aria-hidden="true" style={{width: "5em", height: "5em"}} /></div>}
-            <CardDeck >
-                {!isLoading && catalogue.map(c => <Card>
-                <Card.Img variant="top" src="holder.js/100px160" />
-                <Card.Body>
-                <Card.Title>{c.nom}</Card.Title>
-                <Card.Text>
-                    {c.description}
-                </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                    <div className="text-center">
-                        <Button>Ajouter au panier</Button>
-                    </div>
-                </Card.Footer>
-            </Card>)}
-            </CardDeck>
+            <Row>
+                <Col lg="12">
+                    {isLoadingCatalogue && <div className="text-center"><Spinner as="span" animation="border" size="sm" variant="primary" role="status" aria-hidden="true" style={{width: "5em", height: "5em"}} /></div>}
+                    <CardDeck >
+                        {!isLoadingCatalogue && catalogue.map((c, i) => <CardDisk key={i} data={{c, i}} />)}
+                    </CardDeck>
+                </Col>
+            </Row>
         </Container>
+        
     )
+}
+
+const CardDisk = (props) => {
+    return (
+        <Card key={props.data.i}>
+            <Card.Img variant="top" src="holder.js/100px160" />
+            <Card.Body>
+            <Card.Title>{props.data.c.nom}</Card.Title>
+            <Card.Text>
+                {props.data.c.description}
+            </Card.Text>
+            </Card.Body>
+            <Card.Footer>
+                <div className="text-center">
+                    <LoadingButton data={props}/>
+                </div>
+            </Card.Footer>
+        </Card>
+    )
+}
+
+const LoadingButton = (props) => {
+    const [isLoadingAddCart, setIsLoadingAddCart] = useState(false)
+    return (
+        <Button key={Date.now()} onClick={(e) => addToCart(props.data.data.c, setIsLoadingAddCart, e)}>{!isLoadingAddCart ? "Ajouter au panier" : <Spinner as="span" animation="border" size="sm" variant="primary" role="status" aria-hidden="true" style={{width: "5em", height: "5em"}} />}</Button>
+    )
+}
+
+const addToCart = (disk, setIsLoadingAddCart) => {
+    setIsLoadingAddCart(true)
+    axios.post('http://localhost:4002/panier', { idUser: getCookie("_id"), idDisk : disk._id}).then((res) => 
+    {
+        console.log(res)
+        setIsLoadingAddCart(false)
+    }).catch(err => {
+        console.log(err)
+        setIsLoadingAddCart(false)
+    })
 }
