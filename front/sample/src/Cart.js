@@ -13,8 +13,9 @@ export const Cart = () => {
         setTotal(total => total + v)
     }
 
-    useEffect(() => {
+    useEffect(() => { 
         axios.get("http://localhost:4002/panier/" + getCookie("_id")).then(res => {
+            console.log("tttt")
             setCart(res.data)
             setIsLoading(false)
             console.log(res.data)

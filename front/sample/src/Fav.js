@@ -70,7 +70,7 @@ const Item = (props) => {
 
 const deleteItem = (panier, setIsLoading) => {
     console.log(panier)
-    axios.get("http://localhost:4002/panier/delete/" + panier._id).then(res => {
+    axios.get("http://localhost:4003/delete/" + panier._id).then(res => {
         setIsLoading(true)
         console.log(res.data)
     }).catch(err => {

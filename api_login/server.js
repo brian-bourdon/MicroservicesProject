@@ -25,10 +25,10 @@ const UserModel = mongoose.model("user", {
     pwd: String
 });
 
-UserModel.deleteMany({}, function (err) {
+/*UserModel.deleteMany({}, function (err) {
   if (err) return handleError(err);
   // deleted at most one tank document
-});
+});*/
 
 UserModel.find({ mail: "admin@admin.com" }, function (err, res) {
   if (!res.length) {
@@ -46,8 +46,6 @@ UserModel.find({ mail: "admin@admin.com" }, function (err, res) {
   }
 
 });
-
-
 
 app.get("/users", async (request, response) => {
 	response.header("Access-Control-Allow-Origin", "*");

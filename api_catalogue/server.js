@@ -25,10 +25,11 @@ const CatalogueModel = mongoose.model("catalogue", {
     description: String,
 	prix: Number
 });
-CatalogueModel.deleteMany({}, function (err) {
+
+/*CatalogueModel.deleteMany({}, function (err) {
   if (err) return handleError(err);
   // deleted at most one tank document
-});
+});*/
 
 CatalogueModel.find({ nom: "Disque 1" }, function (err, res) {
   if (!res.length) {

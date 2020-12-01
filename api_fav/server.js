@@ -27,10 +27,35 @@ const FavModel = mongoose.model("fav", {
     idDisk: String
 });
 
+/*FavModel.deleteMany({}, function (err) {
+  if (err) return handleError(err);
+  // deleted at most one tank document
+});*/
+
 app.get("/fav/:idUser", async (request, response) => {
 	response.header("Access-Control-Allow-Origin", "*");
     try {
         var result = await FavModel.find({idUser: request.params.idUser}).exec();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.get("/fav/:idUser/:idDisk", async (request, response) => {
+	response.header("Access-Control-Allow-Origin", "*");
+    try {
+        var result = await FavModel.find({idUser: request.params.idUser, idDisk: request.params.idDisk}).exec();
+        response.send(result);
+    } catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.get("/delete/:idFav", async (request, response) => {
+	response.header("Access-Control-Allow-Origin", "*");
+    try {
+        var result = await FavModel.deleteOne({_id: request.params.idFav}).exec();
         response.send(result);
     } catch (error) {
         response.status(500).send(error);
