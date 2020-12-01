@@ -38,7 +38,6 @@ export const Home = (props) => {
 const CardDisk = (props) => {
     return (
         <Card key={props.data.i}>
-            <Card.Img variant="top" src="holder.js/100px160" />
             <Card.Body>
             <Card.Title>{props.data.c.nom}</Card.Title>
             <Card.Text>

@@ -15,6 +15,7 @@ export function Header(props) {
         <Navbar.Brand onClick={() => history.push("/")}>Projet Microservices</Navbar.Brand>
         <Nav className="mr-auto">
         </Nav>
+        <Button variant="light" id="panier" onClick={() => history.push("/fav")}>Favoris</Button>
         <Button variant="light" id="panier" onClick={() => history.push("/cart")}>Panier</Button>
         <DropdownButton variant="light" id="dropdown-item-button" title={getCookie("mail")} className="person-circle" alignRight>
             <Dropdown.Item as="button" onClick={() => Deconnection(props.data.setConnected, history)}>Déconection</Dropdown.Item>

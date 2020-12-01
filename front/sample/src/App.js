@@ -6,6 +6,7 @@ import {Home} from './Home'
 import {getCookie} from './util'
 import {Header} from './Header'
 import {Cart} from './Cart'
+import {Fav} from './Fav'
 
 function App() {
   const[connected, setConnected] = useState(null)
@@ -24,6 +25,7 @@ function App() {
               <Header data={{setConnected}}/>
                 <Route path="/" exact component={props => <Home data={{location, history}}/>} />
                 <Route path="/cart" exact component={props => <Cart data={{location, history}}/>} />
+                <Route path="/fav" exact component={props => <Fav data={{location, history}}/>} />
               </>}
             </React.Fragment>
         )}
